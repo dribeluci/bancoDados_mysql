@@ -1,48 +1,88 @@
--- Criar Banco de dados 
+-- Criar Banco de Dados
 CREATE DATABASE db_quitanda;
 
--- Selecionar o Banco de Dados
+-- Acessar o Banco de Dados
 USE db_quitanda;
 
--- Criar Tabela tb_produtos
+-- Criar Tabela
 CREATE TABLE tb_produtos(
-id bigint auto_increment, 
-nome varchar(255) NOT NULL, 
-quantidade INT, 
-validade date, 
+id bigint AUTO_INCREMENT,
+nome varchar(255) NOT NULL,
+quantidade int, 
+data_validade date,
 preco decimal NOT NULL, 
 PRIMARY KEY (id)
 );
 
--- Inserir dados na tabela
-INSERT INTO tb_produtos (nome, quantidade, validade, preco)
-VALUES ("arroz", 50, "2023-04-29", 20.00);
+-- Insere dados na tabela
+INSERT INTO tb_produtos(nome, quantidade, data_validade, preco)
+VALUES ("tomate",100, "2022-04-10", 8.00);
 
-INSERT INTO tb_produtos (nome, quantidade, validade, preco)
-VALUES ("chuchu", 20, "2022-04-18", 3.00);
+INSERT INTO tb_produtos(nome, quantidade, data_validade, preco)
+VALUES ("maçã",20, "2022-04-12", 5.00);
 
-INSERT INTO tb_produtos (nome, quantidade, validade, preco)
-VALUES ("tomate", 80, "2022-03-19", 16.00);
+INSERT INTO tb_produtos(nome, quantidade, data_validade, preco)
+VALUES ("laranja",50, "2022-04-10", 10.00);
 
-INSERT INTO tb_produtos (nome, quantidade, validade, preco)
-VALUES ("cenoura", 30, "2022-05-29", 13.00);
+INSERT INTO tb_produtos(nome, quantidade, data_validade, preco)
+VALUES ("banana",200, "2022-04-13", 12.00);
 
-INSERT INTO tb_produtos (nome, quantidade, validade, preco)
-VALUES ("morango", 1, "2022-03-20", 8.50);
+INSERT INTO tb_produtos(nome, quantidade, data_validade, preco)
+VALUES ("uva",1200, "2022-04-14", 30.00);
 
--- Listar todos os produtos
+INSERT INTO tb_produtos(nome, quantidade, data_validade, preco)
+VALUES ("pêra",500, "2022-04-15", 2.90);
+
+/* Visualizar os dados*/ -- Visualiza todos os dados
 SELECT * FROM tb_produtos;
 
--- Atualizar os dados da Tabela
+-- Visualiza somente o nome e o preço
+SELECT nome, preco FROM tb_produtos;
 
-UPDATE tb_produtos SET preco = 8.50 WHERE id = 5;
+-- Visualiza somente o nome e o preço formatado para Reais
+SELECT nome, CONCAT('R$ ', FORMAT(preco, 2, 'pt_BR')) AS preço FROM tb_produtos;
 
-ALTER TABLE tb_produtos MODIFY preco decimal(8,2);
+-- Visualiza o produto cujo id é igual a 1
+SELECT * FROM tb_produtos WHERE id = 1;
 
-SELECT * FROM tb_produtos;
+-- Visualiza todos os produtos cujo preço seja maior do que 5
+SELECT * FROM tb_produtos WHERE preco > 5.00;
 
--- ALteracao de estrtutura da tabela 
+-- Visualiza todos os produtos cujo nome seja maçã
+SELECT * FROM tb_produtos WHERE nome = "maçã";
 
+-- Visualiza todas as pizzas cujo nome seja Maçã ou o Preco > 5.00
+SELECT * FROM tb_produtos WHERE nome = "maçã" OR preco > 5.00;
+
+/* Alterações na Estrutura da Tabela*/ 
+
+-- Adiciona um novo Atributo na Tabela
 ALTER TABLE tb_produtos ADD descricao varchar(255);
 
+-- Atualiza o tipo de um Atributo da Tabela
+-- decimal (6 digitos, sendo os ultimos 2 as casas decimais - 4200.00)
+ALTER TABLE tb_produtos MODIFY preco decimal(6, 2);
+
+-- Remove um atributo da Tabela
 ALTER TABLE tb_produtos DROP descricao;
+
+/* Alterações nos Dados da Tabela*/ 
+
+-- Desabilita o modo safe update
+SET SQL_SAFE_UPDATES = 0;
+
+-- Atualiza o atributo preço na tabela, cujo id seja igual a 1
+UPDATE tb_produtos SET preco = 10.00 WHERE id = 1;
+
+-- Deleta o registro da tabela, cujo id seja igual a 2
+DELETE FROM tb_produtos WHERE id = 2;
+
+
+-- Esqueceu de definir a chave primária da tabela
+ALTER TABLE tb_produtos ADD PRIMARY KEY (id);
+
+-- Modifica o nome de um Atributo da Tabela
+ALTER TABLE tb_produtos CHANGE nome nomeproduto varchar(255);
+
+-- Apaga todos os dados da tabela (Não é possível desfazer)
+DELETE FROM tb_produtos;
